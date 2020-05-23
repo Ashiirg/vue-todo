@@ -19,7 +19,7 @@
 
         <div class="notice-sublist" @click="$router.push('/detail/' + notice.key)">
           <span 
-            v-for="(todo, index) in Object.entries(notice.todo).slice(0,3).map(entry => entry[1])"
+            v-for="(todo, index) in sliceTodos(notice.todo)"
             :key="index"
             :class="{'todo-done': todo.status === 'done'}"
           >
@@ -69,6 +69,15 @@ export default {
     noticeEditKey: '',
   }),
   methods: {
+    sliceTodos(todos) {
+      if (todos === undefined) {
+        return todos
+      }
+      else {
+        return Object.entries(todos).slice(0,3).map(entry => entry[1])
+      }
+    },
+
     async createNotice() {
       await this.$store.dispatch('createNotice', {
         title: this.noticeTitle
