@@ -32,18 +32,20 @@ export default new Vuex.Store({
       try {
         let todoArr = []
         const noticeData = (await firebase.database().ref(`notices`).child(id).once('value')).val() || {}
-        Object.keys(noticeData.todo).forEach(key => {
-          todoArr.push({
-            title: noticeData.todo[key].title,
-            status: noticeData.todo[key].status,
-            key: key,
+        if(noticeData.todo !== undefined) {
+          Object.keys(noticeData.todo).forEach(key => {
+            todoArr.push({
+              title: noticeData.todo[key].title,
+              status: noticeData.todo[key].status,
+              key: key,
+            })
           })
-        })
-
+        }
         const notice = {
           title: noticeData.title,
           todos: todoArr
         }
+        
         return notice
       } catch (error) {
         console.log(error)
